@@ -12,10 +12,14 @@ app.use(bodyParser.json());
 
 // Configuración de la conexión a la base de datos
 const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'tenisparatodos' // Nombre de tu base de datos
+  // host: '127.0.0.1',
+  // user: 'root',
+  // password: '',
+  // database: 'tenisparatodos'
+  host: 'byfnn96wzcbaq9mubrn5-mysql.services.clever-cloud.com',
+  user: 'ugckvzyrzlbchwpa',
+  password: '2bbLU2oQfm3b8tnXVi5G',
+  database: 'byfnn96wzcbaq9mubrn5'
 });
 
 // Conectar a la base de datos
