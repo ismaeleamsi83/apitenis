@@ -2,6 +2,7 @@ const mysql = require('mysql');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const jwt = require('jsonwebtoken'); 
 const app = express();
 const PORT = 3000;
 
@@ -26,6 +27,12 @@ connection.connect((err) => {
   console.log('Conexión exitosa a la base de datos MySQL');
 });
 
+// Iniciar el servidor
+app.listen(PORT, () => {
+  console.log(`Servidor iniciado en el puerto ${PORT}`);
+});
+
+
 // Endpoint para obtener todos los usuarios
 app.get('/api/usuarios', (req, res) => {
   const query = 'SELECT * FROM users'; // Query para seleccionar todos los usuarios
@@ -41,58 +48,25 @@ app.get('/api/usuarios', (req, res) => {
   });
 });
 
-app.get('/api/usuarios/:email', (req, res) => {
-  const userId = req.params.email;
-  const query = 'SELECT * FROM users WHERE email = ?'; // Query para seleccionar un usuario por su ID
-
-  connection.query(query, [userId], (error, results) => {
-    if (error) {
-      console.error('Error al obtener el usuario:', error);
-      res.status(500).json({ error: 'Error al obtener el usuario' });
-      return;
-    }
-
-    if (results.length === 0) {
-      res.status(404).json({ message: 'Usuario no encontrado' });
-      return;
-    }
-
-    res.json(results[0]); // Devuelve el primer usuario encontrado (debería ser solo uno)
-  });
-});
-
-
-// Iniciar el servidor
-app.listen(PORT, () => {
-  console.log(`Servidor iniciado en el puerto ${PORT}`);
-});
-
 
 app.post('/api/login', (req, res) => {
   const { email, password } = req.body;
-  const query = 'SELECT * FROM users WHERE email = ?'; // Consulta para obtener el usuario por su email
+  const query = 'SELECT * FROM users WHERE email = ? AND password = ?'; // Consulta para obtener el usuario por su email
 
-  connection.query(query, [email], (error, results) => {
-    if (error) {
-      console.error('Error al obtener el usuario:', error);
-      res.status(500).json({ error: 'Error al obtener el usuario' });
-      return;
+  connection.query(query, [email, password], (error, results) => {
+    
+    if(results.length === 0){
+      //const resul = res.statusCode;
+      res.json({ message: 'Error autenticación' });
+    }else{
+      const user = results[0];
+      // Generar un token con JWT
+      const token = jwt.sign({ user }, 'secreto_supersecreto', { expiresIn: '1h' });
+
+      res.json({ message: 'Inicio de sesión exitoso', token, user });
     }
-
-    if (results.length === 0) {
-      res.status(404).json({ message: 'Usuario no encontrado' });
-      return;
-    }
-
-    const user = results[0];
-
-    // Aquí deberías comparar la contraseña encriptada almacenada en la base de datos con la contraseña proporcionada por el usuario
-    if (user.password !== password) {
-      res.status(401).json({ message: 'Contraseña incorrecta' });
-      return;
-    }
-
-    res.json({ message: 'Inicio de sesión exitoso', user });
+    
   });
+  
 });
 
