@@ -6,14 +6,12 @@ const jwt = require('jsonwebtoken');
 const app = express();
 const PORT = 3000;
 
-const corsOptions = {
-  origin: '*', // Cambia esto al origen que deseas permitir
+app.use(cors({
+  origin: 'https://tenis-para-todos.web.app',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   preflightContinue: false,
   optionsSuccessStatus: 204,
-};
-
-app.use(cors(corsOptions));
+}));
 
 //app.use(cors());
 // Parsea el cuerpo de las solicitudes entrantes en formato JSON
