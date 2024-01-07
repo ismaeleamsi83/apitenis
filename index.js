@@ -37,7 +37,7 @@ app.listen(PORT, () => {
 });
 
 const corsOptions = {
-  origin: 'https://apitenis-production.up.railway.app/', // Cambia esto al origen que deseas permitir
+  origin: 'https://tenis-para-todos.web.app', // Cambia esto al origen que deseas permitir
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   preflightContinue: false,
   optionsSuccessStatus: 204,
