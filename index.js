@@ -7,7 +7,7 @@ const app = express();
 const PORT = 3000;
 
 const corsOptions = {
-  origin: 'https://tenis-para-todos.web.app', // Cambia esto al origen que deseas permitir
+  origin: '*', // Cambia esto al origen que deseas permitir
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   preflightContinue: false,
   optionsSuccessStatus: 204,
