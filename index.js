@@ -36,6 +36,15 @@ app.listen(PORT, () => {
   console.log(`Servidor iniciado en el puerto ${PORT}`);
 });
 
+const corsOptions = {
+  origin: 'https://apitenis-production.up.railway.app/', // Cambia esto al origen que deseas permitir
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+
 
 // Endpoint para obtener todos los usuarios
 app.get('/api/usuarios', (req, res) => {
