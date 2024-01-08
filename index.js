@@ -44,6 +44,19 @@ connection.connect((err) => {
     return;
   }
   console.log('Conexión exitosa a la base de datos MySQL');
+
+  //prueba
+  const query = 'SELECT * FROM users'; // Query para seleccionar todos los usuarios
+
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error('Error al obtener usuarios:', error);
+      res.status(500).json({ error: 'Error al obtener usuarios' });
+      return;
+    }
+
+    res.json(results);
+  });
 });
 
 // Iniciar el servidor
