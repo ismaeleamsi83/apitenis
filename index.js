@@ -51,7 +51,9 @@ app.listen(PORT, () => {
   console.log(`Servidor iniciado en el puerto ${PORT}`);
 });
 
-
+app.get("/", (req, res)=>{
+  res.status(200).send({ msg: "Funciona la raiz" });
+});
 
 
 // Endpoint para obtener todos los usuarios
