@@ -4,14 +4,12 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const jwt = require('jsonwebtoken'); 
 const app = express();
-const PORT = 3000;
+const PORT = 8080;
 
-app.use(cors({
-  origin: 'https://tenis-para-todos.web.app',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
-}));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(cors());
 
 // app.use((req, res, next) => {
 //   res.setHeader('Access-Control-Allow-Origin', 'https://tenis-para-todos.web.app');
@@ -46,17 +44,7 @@ connection.connect((err) => {
   console.log('Conexión exitosa a la base de datos MySQL');
 
   //prueba
-  const query = 'SELECT * FROM users'; // Query para seleccionar todos los usuarios
-
-  connection.query(query, (error, results) => {
-    if (error) {
-      console.error('Error al obtener usuarios:', error);
-      res.status(500).json({ error: 'Error al obtener usuarios' });
-      return;
-    }
-
-    res.json(results);
-  });
+  
 });
 
 // Iniciar el servidor
