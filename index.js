@@ -55,7 +55,7 @@ app.listen(PORT, () => {
 
 
 // Endpoint para obtener todos los usuarios
-app.get('/api/usuarios', (req, res) => {
+app.get('/users', (req, res) => {
   const query = 'SELECT * FROM users'; // Query para seleccionar todos los usuarios
 
   connection.query(query, (error, results) => {
