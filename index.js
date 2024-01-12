@@ -5,19 +5,24 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken'); 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const cookieParser = require('cookie-parser');
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(cors());
+//app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  optionsSuccessStatus: 204,
+  allowedHeaders: 'Content-Type, Authorization',
+}));
 
-// app.use((req, res, next) => {
-//   res.setHeader('Access-Control-Allow-Origin', 'https://tenis-para-todos.web.app');
-//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-//   res.setHeader('Access-Control-Allow-Credentials', true);
-//   next();
-// });
+const JWT_SECRET_KEY = "LA_CLAVE_SECRETA";
+
+
 
 //app.use(cors());
 // Parsea el cuerpo de las solicitudes entrantes en formato JSON
@@ -85,8 +90,9 @@ app.post('/api/login', (req, res) => {
     }else{
       const user = results[0];
       // Generar un token con JWT
-      const token = jwt.sign({ user }, 'secreto_supersecreto', { expiresIn: '1h' });
+      const token = jwt.sign( {user} , JWT_SECRET_KEY, { expiresIn: '1h' });
 
+      res.cookie("jwt", token);
       res.json({ message: 'Inicio de sesión exitoso', token, user });
     }
     
@@ -94,3 +100,50 @@ app.post('/api/login', (req, res) => {
   
 });
 
+
+
+
+
+
+//prueba FUNCIONA VERIFICAR TOKEN
+function verifyToken(req, res, next) {
+  //console.log("adentro");
+  const header = req.header("Authorization") || "";
+  const token = header.split(" ")[1];
+  if (!token) {
+    return res.status(401).json({ message: "Token not provied" });
+  }
+  try {
+    const payload = jwt.verify(token, JWT_SECRET_KEY);
+    req.email = payload.email;
+    //console.log("aqui");
+    next();
+  } catch (error) {
+    return res.status(403).json({ message: "Token not valid" });
+  }
+}
+
+app.get("/protected", verifyToken, (req, res) => {
+  return res.status(200).json({ message: "You have access" });
+});
+
+
+
+
+
+
+// Registro
+app.post('/register', (req, res) => {
+  const { name, email, tel, password } = req.body;
+  const INSERT_USER_QUERY = `INSERT INTO users (name, email, tel, password) VALUES (?, ?, ?, ?)`;
+
+  connection.query(INSERT_USER_QUERY, [name, email, tel, password], (err, results) => {
+    if (err) {
+      console.error('Error registering user: ', err);
+      res.status(500).json({ error: 'Could not register user' });
+      return;
+    }
+    console.log('User registered successfully');
+    res.status(201).json({ message: 'User registered successfully' });
+  });
+});
