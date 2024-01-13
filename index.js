@@ -107,7 +107,7 @@ app.post('/api/login', (req, res) => {
 
 //prueba FUNCIONA VERIFICAR TOKEN
 function verifyToken(req, res, next) {
-  //console.log("adentro");
+  console.log("adentro");
   const header = req.header("Authorization") || "";
   const token = header.split(" ")[1];
   if (!token) {
@@ -116,7 +116,7 @@ function verifyToken(req, res, next) {
   try {
     const payload = jwt.verify(token, JWT_SECRET_KEY);
     req.email = payload.email;
-    //console.log("aqui");
+    console.log("aqui");
     next();
   } catch (error) {
     return res.status(403).json({ message: "Token not valid" });
