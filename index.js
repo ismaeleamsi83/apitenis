@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const cookieParser = require('cookie-parser');
+const { v4: uuidv4 } = require('uuid');
 
 app.use(express.json());
 app.use(cookieParser());
@@ -135,9 +136,10 @@ app.get("/protected", verifyToken, (req, res) => {
 // Registro
 app.post('/register', (req, res) => {
   const { name, email, tel, password } = req.body;
-  const INSERT_USER_QUERY = `INSERT INTO users (name, email, tel, password) VALUES (?, ?, ?, ?, ?)`;
+  const INSERT_USER_QUERY = `INSERT INTO users (id, name, email, tel, password) VALUES (?, ?, ?, ?, ?)`;
 
-  connection.query(INSERT_USER_QUERY, ["asasasddssdsssd", name, email, tel, password], (err, results) => {
+  const userId = uuidv4();
+  connection.query(INSERT_USER_QUERY, [userId, name, email, tel, password], (err, results) => {
     if (err) {
       console.error('Error registering user: ', err);
       res.status(500).json({ error: 'Could not register user' });
