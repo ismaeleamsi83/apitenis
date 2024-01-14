@@ -135,9 +135,9 @@ app.get("/protected", verifyToken, (req, res) => {
 // Registro
 app.post('/register', (req, res) => {
   const { name, email, tel, password } = req.body;
-  const INSERT_USER_QUERY = `INSERT INTO users (name, email, tel, password) VALUES (?, ?, ?, ?)`;
+  const INSERT_USER_QUERY = `INSERT INTO users (name, email, tel, password) VALUES (?, ?, ?, ?, ?)`;
 
-  connection.query(INSERT_USER_QUERY, [name, email, tel, password], (err, results) => {
+  connection.query(INSERT_USER_QUERY, ["asasasddssdsssd", name, email, tel, password], (err, results) => {
     if (err) {
       console.error('Error registering user: ', err);
       res.status(500).json({ error: 'Could not register user' });
