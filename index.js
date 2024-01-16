@@ -139,8 +139,9 @@ app.post('/register', (req, res) => {
   const INSERT_USER_QUERY = `INSERT INTO users (id, name, email, tel, password, discharge_date) VALUES (?, ?, ?, ?, ?)`;
 
   const discharge_date = new Date();
+  const fechaFormateada = discharge_date.toISOString().slice(0, 19).replace('T', ' ');
   const userId = uuidv4();
-  connection.query(INSERT_USER_QUERY, [userId, name, email, tel, password, discharge_date], (err, results) => {
+  connection.query(INSERT_USER_QUERY, [userId, name, email, tel, password, fechaFormateada], (err, results) => {
     if (err) {
       console.error('Error registering user: ', err);
       res.status(500).json({ error: 'Could not register user' });
