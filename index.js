@@ -138,7 +138,7 @@ app.post('/register', (req, res) => {
   const { name, email, tel, password } = req.body;
   const INSERT_USER_QUERY = `INSERT INTO users (id, name, email, tel, password, discharge_date) VALUES (?, ?, ?, ?, ?)`;
 
-  const discharge_date = Date();
+  const discharge_date = new Date();
   const userId = uuidv4();
   connection.query(INSERT_USER_QUERY, [userId, name, email, tel, password, discharge_date], (err, results) => {
     if (err) {
