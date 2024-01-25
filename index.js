@@ -144,7 +144,7 @@ app.post('/register', (req, res) => {
   connection.query(INSERT_USER_QUERY, [userId, name, email, tel, password, discharge_date], (err, results) => {
     if (err.code === 'ER_DUP_ENTRY') {
       // El error es una entrada duplicada
-      res.status(400).send('La dirección de correo electrónico ya está en uso. Por favor, elija otra.');
+      res.status(400).json('La dirección de correo electrónico ya está en uso. Por favor, elija otra.');
     } 
     if (err) {
       console.error('Error registering user: ', err);
