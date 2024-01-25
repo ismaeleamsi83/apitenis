@@ -144,7 +144,7 @@ app.post('/register', (req, res) => {
   connection.query(INSERT_USER_QUERY, [userId, name, email, tel, password, discharge_date], (err, results) => {
     if (err.errno === 1062) {
       // El error es una entrada duplicada
-      res.status(400).json({ error: 'Email duplicado' });
+      res.status(400).json({ message: 'Email duplicado' });
       return;
     } 
     if (err) {
