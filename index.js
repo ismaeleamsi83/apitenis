@@ -53,6 +53,8 @@ connection.connect((err) => {
   
 });
 
+
+
 // Iniciar el servidor
 app.listen(PORT, () => {
   console.log(`Servidor iniciado en el puerto ${PORT}`);
@@ -108,7 +110,7 @@ app.post('/api/login', (req, res) => {
 
 //prueba FUNCIONA VERIFICAR TOKEN
 function verifyToken(req, res, next) {
-  console.log("adentro");
+  //console.log("adentro");
   const header = req.header("Authorization") || "";
   const token = header.split(" ")[1];
   if (!token) {
@@ -117,7 +119,7 @@ function verifyToken(req, res, next) {
   try {
     const payload = jwt.verify(token, JWT_SECRET_KEY);
     req.email = payload.email;
-    console.log("aqui");
+    //console.log("aqui");
     next();
   } catch (error) {
     return res.status(403).json({ message: "Token not valid" });
@@ -142,17 +144,23 @@ app.post('/register', (req, res) => {
   //const fechaFormateada = discharge_date.toISOString().slice(0, 19).replace('T', ' ');
   const userId = uuidv4();
   connection.query(INSERT_USER_QUERY, [userId, name, email, tel, password, discharge_date], (err, results) => {
-    // if (err.errno === 1062) {
-    //   // El error es una entrada duplicada
-    //   res.status(400).json({ message: 'Email duplicado' });
-    //   return;
-    // } 
+    
+    // verifica si existe el email u otro error 
     if (err) {
-      console.error('Error registering user: ', err);
-      res.status(500).json({ error: 'Could not register user' });
-      return;
+      if (err.code === 'ER_DUP_ENTRY') {
+          res.status(400).json({error: `El correo ${email} ya existe`});
+          return;
+        } else {
+          console.error('Error registering user: ', err);
+          res.status(500).json({ error: 'Could not register user' });
+          return;
+      }
+      
     }
     console.log('User registered successfully');
     res.status(201).json({ message: 'User registered successfully' });
   });
 });
+
+
+
