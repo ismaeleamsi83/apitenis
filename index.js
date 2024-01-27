@@ -148,8 +148,8 @@ app.post('/register', (req, res) => {
     // verifica si existe el email u otro error 
     if (err) {
       if (err.code === 'ER_DUP_ENTRY') {
-          res.status(400).json({error: `El correo ${email} ya existe`});
-          return;
+          return res.status(400).json({error: `El correo ${email} ya existe`});
+          //return;
         } else {
           console.error('Error registering user: ', err);
           res.status(500).json({ error: 'Could not register user' });
