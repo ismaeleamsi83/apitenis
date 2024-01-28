@@ -113,7 +113,7 @@ app.get('/api/perfil', (req, res) => {
       // Haz lo que necesites hacer con ella, como verificarla, decodificarla, etc.
       res.json({ user:  userCookie });
   } else {
-      res.json({ message: 'El usuario no tiene una cookie JWT' });
+      res.json({ message: 'El usuario no tiene una cookie JWT', userCookie });
   }
   
 });
