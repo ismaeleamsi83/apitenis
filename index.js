@@ -108,7 +108,7 @@ app.post('/api/perfil', (req, res) => {
   const { id } = req.body;
   const query = 'SELECT * FROM users WHERE id = ? '; // Consulta para obtener el usuario por su email
 
-  console.log(id);
+  //console.log(id);
   connection.query(query, [id], (error, results) => {
     
     if(results.length === 0){
@@ -117,7 +117,7 @@ app.post('/api/perfil', (req, res) => {
     }else{
       const user = results[0];
       // Generar un token con JWT
-      res.json({ message: 'Perfil ok', user });
+      res.json({ user });
     }
     
   });
