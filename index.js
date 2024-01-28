@@ -108,11 +108,10 @@ app.get('/api/perfil', (req, res) => {
   //const { email, password } = req.body;
   const jwtCookie = req.cookies.jwt;
   const userCookie = req.cookies.user;
-  const userData = JSON.parse(userCookie);
   if (jwtCookie) {
       // El usuario tiene una cookie JWT
       // Haz lo que necesites hacer con ella, como verificarla, decodificarla, etc.
-      res.json(userData);
+      res.json({ user:  userCookie });
   } else {
       res.json({ message: 'El usuario no tiene una cookie JWT' });
   }
