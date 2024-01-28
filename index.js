@@ -104,19 +104,22 @@ app.post('/api/login', (req, res) => {
   
 });
 
-app.get('/api/perfil', (req, res) => {
-  //const { email, password } = req.body;
-  const jwtCookie = req.cookies.jwt;
-  const userCookie = req.cookies.user;
-  console.log(userCookie);
-  console.log("entra en perfil");
-  if (jwtCookie) {
-      // El usuario tiene una cookie JWT
-      // Haz lo que necesites hacer con ella, como verificarla, decodificarla, etc.
-      res.json({ user:  userCookie });
-  } else {
-      res.json({ message: 'El usuario no tiene una cookie JWT'});
-  }
+app.post('/api/perfil', (req, res) => {
+  const { id } = req.body;
+  const query = 'SELECT * FROM users WHERE id = ? '; // Consulta para obtener el usuario por su email
+
+  connection.query(query, [id], (error, results) => {
+    
+    if(results.length === 0){
+      //const resul = res.statusCode;
+      res.json({ message: 'Error id' });
+    }else{
+      const user = results[0];
+      // Generar un token con JWT
+      res.json({ message: 'Perfil ok', user });
+    }
+    
+  });
   
 });
 
