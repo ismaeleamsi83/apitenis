@@ -109,6 +109,7 @@ app.get('/api/perfil', (req, res) => {
   const jwtCookie = req.cookies.jwt;
   const userCookie = req.cookies.user;
   console.log(userCookie);
+  console.log("entra en perfil");
   if (jwtCookie) {
       // El usuario tiene una cookie JWT
       // Haz lo que necesites hacer con ella, como verificarla, decodificarla, etc.
