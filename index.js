@@ -105,9 +105,10 @@ app.post('/api/login', (req, res) => {
 });
 
 app.post('/api/perfil', (req, res) => {
-  const { id } = req.id;
+  const { id } = req.body;
   const query = 'SELECT * FROM users WHERE id = ? '; // Consulta para obtener el usuario por su email
 
+  console.log(id);
   connection.query(query, [id], (error, results) => {
     
     if(results.length === 0){
